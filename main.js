@@ -51,5 +51,38 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.addEventListener("keydown", moveShooter);
 
+  // move the alien invaders
+  function moveInvaders() {
+    const hasNearLeftEdge = alienInvaders[0] % width === 0
+    const hasNearRightEdge = alienInvaders[alienInvaders.length - 1] % width === width - 1;
+
+    if ((hasNearLeftEdge && direction === -1) || (hasNearRightEdge && direction === 1)) {
+      direction = width;
+    } else if (direction === width) {
+      direction = hasNearLeftEdge ? 1 : -1;
+    }
+
+
+    alienInvaders.forEach(invaderIndex => { squareList[invaderIndex].classList.remove("invader") })
+    alienInvaders.forEach((_, i) => { alienInvaders[i] += direction });
+    alienInvaders.forEach(invaderIndex => { squareList[invaderIndex].classList.add("invader") });
+
+    // Game Over State
+    if (squareList[currentShooterIndex].classList.contains("invader", "shooter")) {
+      resultDisplay.textContent = "Game Over";
+
+      squareList[currentShooterIndex].classList.add("boom");
+      clearInterval(invaderId)
+    }
+
+    alienInvaders.forEach(invaderIndex => {
+      if(invaderIndex > (squareList.length - (width - 1))) {
+        resultDisplay.textContent = "Game Over";
+        clearInterval(invaderId);
+      }
+    })
+  }
+
+  invaderId = setInterval(moveInvaders, 500);
 
 });
