@@ -18,8 +18,38 @@ document.addEventListener('DOMContentLoaded', () => {
   ];
 
   // draw the alien invaders
-
   alienInvaders.forEach(invaderIndex => {
     squareList[currentInvaderIndex + invaderIndex].classList.add("invader")
-  })
+  });
+
+  // draw the shooter
+  squareList[currentShooterIndex].classList.add("shooter");
+
+  // move the shooter along a line
+
+  function moveShooter(e) {
+    squareList[currentShooterIndex].classList.remove("shooter")
+
+    switch (e.keyCode) {
+      // Left Arrow
+      case 37:
+        if (currentShooterIndex % width !== 0) {
+          currentShooterIndex -= 1;
+        }
+        break;
+
+      // Right Arrow
+      case 39:
+        if (currentShooterIndex % width < (width - 1)) {
+          currentShooterIndex += 1;
+        }
+        break;
+    }
+
+    squareList[currentShooterIndex].classList.add("shooter");
+  }
+
+  document.addEventListener("keydown", moveShooter);
+
+
 });
